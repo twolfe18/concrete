@@ -4,13 +4,13 @@
  * See LICENSE in the project root directory.
  */
 
-/*
- * Rebar ProtoBuf serialization definitions
+/**
+ * Concrete - Rebar ProtoBuf serialization definitions
  * 
  */
 
-option java_package="edu.jhu.rebar";
-package rebar;
+option java_package="edu.jhu.concrete";
+package concrete;
 
 //===========================================================================
 // Conventions

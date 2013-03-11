@@ -4,7 +4,8 @@
  * See LICENSE in the project root directory.
  */
 
-/* Rebar ProtoBuf serialization definition
+/**
+ * Concrete - Rebar ProtoBuf serialization definition
  * 
  * Remote procedure call (RPC) messages used to communicate with a
  * Java process that provides access to the REBAR corpora.  These
@@ -30,10 +31,10 @@
  *      sending messages.
  */
 
-option java_package="edu.jhu.rebar.rpc";
-package rebar_rpc;
+option java_package="edu.jhu.concrete.rpc";
+package concrete_rpc;
 
-import "rebar.proto";
+import "concrete.proto";
 
 //======================================================================
 // RPC Request Messages
@@ -124,11 +125,11 @@ message RPCRequest {
 //======================================================================
 
 message RPCResponse {
-  repeated rebar.Communication communication = 1;
+  repeated concrete.Communication communication = 1;
   optional CommunicationIterator communication_iterator = 2;
-  repeated rebar.Vertex vertex = 3;
+  repeated concrete.Vertex vertex = 3;
   optional VertexIterator vertex_iterator = 4;
-  repeated rebar.Edge edge = 5;
+  repeated concrete.Edge edge = 5;
   optional EdgeIterator edge_iterator = 6;
   repeated Stage stage = 7;
   optional bool has_next = 8;
@@ -144,8 +145,8 @@ message RPCResponse {
   optional GraphInitializer graph_initializer = 16;
 
   repeated string com_id = 17;
-  repeated rebar.UUID vertex_id = 18;
-  repeated rebar.EdgeId edge_id = 19;
+  repeated concrete.UUID vertex_id = 18;
+  repeated concrete.EdgeId edge_id = 19;
 
   optional ComIdSet com_id_set = 20;
   optional VertexIdSet vertex_id_set = 21;
@@ -180,8 +181,8 @@ message Stage {
 message ProtoDiff {
   repeated Entry diff = 3;
   message Entry {
-    optional rebar.UUID uuid = 1;
-    optional rebar.EdgeId edge_id = 2;
+    optional concrete.UUID uuid = 1;
+    optional concrete.EdgeId edge_id = 2;
     required bytes proto = 3;
   }
 }
@@ -287,7 +288,7 @@ message CorpusInitializer {
   }
   message AddCommunication { // returns void
     required CorpusInitializer self = 1;
-    required rebar.Communication communication = 2;
+    required concrete.Communication communication = 2;
   }
 }
 
@@ -473,7 +474,7 @@ message GraphInitializer {
   }
   message AddVertex { // returns void
     required GraphInitializer self = 1;
-    required rebar.Vertex vertex = 2;
+    required concrete.Vertex vertex = 2;
   }
 }
 
@@ -486,7 +487,7 @@ message GraphReader {
   }
   message LoadVertex { // returns Vertex
     required GraphReader self = 1;
-    required rebar.UUID vertex_id = 2;
+    required concrete.UUID vertex_id = 2;
   }
   message LoadVertices { // returns VertexIterator
     required GraphReader self = 1;
@@ -494,7 +495,7 @@ message GraphReader {
   }
   message LoadEdge { // returns Edge
     required GraphReader self = 1;
-    required rebar.EdgeId edge_id = 2;
+    required concrete.EdgeId edge_id = 2;
   }
   message LoadEdges { // returns EdgeIterator
     required GraphReader self = 1;
@@ -514,12 +515,12 @@ message GraphDiffWriter {
   }
   message WriteVertexDiff { // returns void
     required GraphDiffWriter self = 1;
-    required rebar.UUID vertex_id = 2;
+    required concrete.UUID vertex_id = 2;
     required ProtoDiff diff = 3;
   }
   message WriteEdgeDiff { // returns void
     required GraphDiffWriter self = 1;
-    required rebar.EdgeId edge_id = 2;
+    required concrete.EdgeId edge_id = 2;
     required ProtoDiff diff = 3;
   }
 }
@@ -577,7 +578,7 @@ message EdgeIdSet {
  * set.  Use vertex_id_set_name="all" to specify the set of all vertex
  * ids in the graph. */
 message VertexIdCollection {
-  repeated rebar.UUID vertex_id = 1;            //!< explicit list of ids
+  repeated concrete.UUID vertex_id = 1;            //!< explicit list of ids
   optional int64 vertex_id_set = 2;   //!< id of VertexIdSet
   optional string vertex_id_set_name = 3;   //!< named VertexIdSet
 }
@@ -587,7 +588,7 @@ message VertexIdCollection {
  * set.  Use edge_id_set_name="all" to specify the set of all edge
  * ids in the graph. */
 message EdgeIdCollection {
-  repeated rebar.EdgeId edge_id = 1;            //!< explicit list of ids
+  repeated concrete.EdgeId edge_id = 1;            //!< explicit list of ids
   optional int64 edge_id_set = 2;   //!< id of EdgeIdSet
   optional string edge_id_set_name = 3;   //!< named EdgeIdSet
 }
