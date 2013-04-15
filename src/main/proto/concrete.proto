@@ -416,6 +416,11 @@ message Token {
 
   /** Location of this token in the original audio. */
   optional AudioSpan audio_span = 5;
+
+  /*
+   * The lemma of this token. 
+   */ 
+  optional string lemma = 6;
 }
 
 /** A pointer to a token. */
