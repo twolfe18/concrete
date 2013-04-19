@@ -416,16 +416,6 @@ message Token {
 
   /** Location of this token in the original audio. */
   optional AudioSpan audio_span = 5;
-
-  /*
-   * The lemma of this token. 
-   */ 
-  optional string lemma = 6;
-
-  /*
-   * The NER tag of this token. 
-   */ 
-  optional string ner_tag = 7;
 }
 
 /** A pointer to a token. */
@@ -557,16 +547,17 @@ message Tokenization {
     }
   }
 
-  /** Theories about the part-of-speech tags for the tokens in this
-   * tokenization. */
-  repeated TokenTagging tagging = 6;
-
-  repeated TokenLanguageIdentification token_lid = 7;
+  /** Theories about various annotations of the tokens
+   * in this tokenization. */
+  repeated TokenTagging posTags = 6;
+  repeated TokenTagging nerTags = 7;
+  repeated TokenTagging lemmas = 8;
+  repeated TokenTagging langId = 9;
 }
 
-/** A theory about the part-of-speech tags for the tokens in a
- * tokenization.  The TokenTagging consists of a mapping from tokens
- * (using token ids) to string tags (typically part-of-speech tags).
+/** A theory about some token-level annotation.
+ * The TokenTagging consists of a mapping from tokens
+ * (using token ids) to string tags (e.g. part-of-speech tags or lemmas).
  *
  * The mapping defined by a TokenTagging may be partial --
  * i.e., some tokens may not be assigned any part of speech tags.
@@ -575,58 +566,40 @@ message Tokenization {
  * part-of-speech taggings (for different paths through the lattice),
  * since the appropriate tag for a given token may depend on the path
  * taken.  For example, you might define a separate
- * TokenTagging for each of the top N paths, which leaves all
+ * TokenTagging for each of the top K paths, which leaves all
  * tokens that are not part of the path unlabeled.
  *
- * Currently, we use strings to encode part of speech tags.  In
+ * Currently, we use strings to encode annotations. In
  * the future, we may add fields for encoding specific tag sets
  * (eg treebank tags), or for adding compound tags.
  */
 message TokenTagging {
-  /** Unique identifier for this part-of-speech tagging. */
+  /** Unique identifier for this annotation */
   required UUID uuid = 1;
 
-  /** Information about where this part-of-speech tagging came from. */
+  /** Information about where the annotation came from.
+   * This should be used to tell between gold-standard annotations
+   * and automatically-generated theories about the data */
   optional AnnotationMetadata metadata = 2;
 
-  /** The mapping from tokens to part of speech tags.  This may be
-   * a partial mapping.*/
+  /** The mapping from tokens to annotations.
+   * This may be a partial mapping. */
   repeated TaggedToken tagged_token = 3;
 
   message TaggedToken {
     /** A pointer to the token being tagged. */
     optional int32 token_id = 1;
 
-    /** A string containing the part of speech tag.  If the tag set
-     * you are using is not case sensitive, then all part of speech
-     * tags should be normalized to upper case. */
+    /** A string containing the annotation.
+	 *  If the tag set you are using is not case sensitive,
+	 * then all part of speech tags should be normalized to upper case. */
     optional string tag = 2;
-  }
-}
 
-message TokenLanguageIdentification {
-  /** Unique identifier for this language identification */
-  required UUID uuid = 1;
-
-  /** Information about where this language identification came from. */
-  optional AnnotationMetadata metadata = 2;
-
-  /** The mapping from tokens to languages. This may be a partial 
-   * mapping. */
-  repeated LIDToken lid_token = 3;
-  
-  message LIDToken {
-    /** A pointer to the token being language IDed. */
-    optional int32 token_id = 1;
-    
-    /** Language of the token (specified using a ISO 639-3
-    * three-letter code). */
-    optional string language = 2;
-
-    /** Confidence in the language identification. */
+    /** Confidence of the annotation. */
     optional float confidence = 3;
   }
 }
+
 
 //===========================================================================
 // Parse Trees
